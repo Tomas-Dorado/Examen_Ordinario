@@ -55,5 +55,8 @@ class RepositorioDeEstados:
             estado_transformado.id = id_final
             self.estados[id_final] = estado_transformado
 
+
+    
+
     
     

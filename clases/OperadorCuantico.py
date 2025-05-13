@@ -12,7 +12,7 @@ class OperadorCuantico:
         nuevo_id = f"{estado.id}_{self.nombre}"
         return estado.__class__(id=nuevo_id, vector=nuevo_vector, base=estado.base)
     
-    
+
 
 
 
