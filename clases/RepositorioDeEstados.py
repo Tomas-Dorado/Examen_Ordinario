@@ -1,4 +1,5 @@
 from EstadoCuantico import EstadoCuantico
+from OperadorCuantico import OperadorCuantico
 
 class RepositorioDeEstados:
     def __init__(self):
@@ -26,19 +27,30 @@ class RepositorioDeEstados:
             raise ValueError(f"Error: no existe un estado con identificador '{id}'")
         del self.estados[id]
 
-if __name__ == "__main__":
-    repo = RepositorioDeEstados()
-    # Agregar estados
-    repo.agregar_estado("q1", [1.0, 0.0], "computacional")
-    repo.agregar_estado("q2", [0.0, 1.0], "computacional")
-    # Listar estados
-    print("Estados en el repositorio:")
-    print(repo.listar_estados())
-    # Obtener un estado
-    estado = repo.obtener_estado("q1")
-    print("Estado obtenido:", estado)
-    # Eliminar un estado
-    repo.eliminar_estado("q2")
-    print("Estados después de eliminar q2:")
-    print(repo.listar_estados())
+    def aplicar_operador(self, id_estado: str, operador: OperadorCuantico, nuevo_id: str = None):
+        estado_original = self.obtener_estado(id_estado)
+        estado_transformado = operador.aplicar(estado_original)
+        
+        if nuevo_id is not None:
+            estado_transformado.id = nuevo_id
+            self.estados[nuevo_id] = estado_transformado
+        else:
+            # Generar un nuevo id si no se quiere sobrescribir el original
+            nuevo_id_generado = f"{id_estado}_{getattr(operador, 'nombre', 'op')}"
+            # Si el id generado ya existe, agregar un sufijo numérico
+            contador = 1
+            id_final = nuevo_id_generado
+            while id_final in self.estados:
+                id_final = f"{nuevo_id_generado}_{contador}"
+                contador += 1
+            estado_transformado.id = id_final
+            self.estados[id_final] = estado_transformado
+
+        # Si el id generado es igual al id original, actualizar el vector del estado existente
+        if id_final == id_estado:
+            self.estados[id_estado].vector = estado_transformado.vector
+        else:
+            self.agregar_estado(id_final, estado_transformado.vector, estado_transformado.base)
+
+
 
