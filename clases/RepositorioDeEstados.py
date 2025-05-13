@@ -95,6 +95,7 @@ class RepositorioDeEstados:
             next(reader)
 
 
+
 repo = RepositorioDeEstados()
 repo.agregar_estado("q0", [1.0,0.0], "computacional")
 repo.agregar_estado("q1", [0.0,1.0], "computacional")
