@@ -24,9 +24,10 @@ class EstadoCuantico:
         return vector / norma
     
     def medir(self):
-        probabilidades = [abs(amplitud)**2 for amplitud in self.vector]
-        return probabilidades
-    
+        probabilidades = np.abs(self.vector)**2
+        probabilidades /= np.sum(probabilidades)
+        return list(zip(self.base, probabilidades))
+
     def __str__(self):
         return f"{self.id}: vector={self.vector} en base {self.base}"
 
