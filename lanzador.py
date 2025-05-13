@@ -10,8 +10,8 @@ def ejecutar_pruebas():
     
     # Prueba 1: Creación básica de estados
     print("\n--- Prueba 1: Creación de estados básicos ---")
-    repo.agregar_estado("cero", [1, 0], "computacional")  # |0>
-    repo.agregar_estado("uno", [0, 1], "computacional")   # |1>
+    repo.agregar_estado("cero", [1.0, 0.0], "computacional")  # |0>
+    repo.agregar_estado("uno", [0.0, 1.0], "computacional")   # |1>
     repo.agregar_estado("mas", [0.707, 0.707], "computacional")  # |+>
     repo.agregar_estado("menos", [0.707, -0.707], "computacional")  # |->
     
