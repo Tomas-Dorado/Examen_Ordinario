@@ -56,7 +56,51 @@ class RepositorioDeEstados:
             self.estados[id_final] = estado_transformado
 
 
-    
+    def medir_estado(self, id, imprimir=True):
+        """
+        Mide el estado cuántico y muestra/retorna las probabilidades.
+        
+        Args:
+            id (str): ID del estado a medir
+            imprimir (bool): Si True, imprime resultados formateados
+            
+        Returns:
+            dict: Probabilidades de medición si imprimir=False
+        """
+        estado = self.obtener_estado(id)
+        probabilidades = estado.medir()
+        
+        if imprimir:
+            print(f"\nMedición del estado {id} en base {estado.base}:")
+            for resultado, prob in probabilidades.items():
+                print(f"- {resultado}: {prob*100:.2f}%")
+            print(f"Suma total: {sum(probabilidades.values())*100:.2f}%")
+        else:
+            return probabilidades
 
     
+if __name__ == "__main__":
+    # Crear repositorio
+    repo = RepositorioDeEstados()
+    
+    # Agregar estados de ejemplo
+    repo.agregar_estado("psi_plus", [0.707, 0.707], "computacional")  # |+>
+    repo.agregar_estado("psi_minus", [0.707, -0.707], "computacional") # |->
+    repo.agregar_estado("ejemplo", [0.6, 0.8], "computacional")  # Estado no normalizado
+    
+    # Definir operador Hadamard
+    H = OperadorCuantico("H", [
+        [0.707, 0.707],
+        [0.707, -0.707]
+    ])
+    
+    # Aplicar operador a un estado
+    repo.aplicar_operador("psi_plus", H, "psi_plus_H")
+    
+    # Medir diferentes estados
+    print("\n=== Ejemplos de medición ===")
+    repo.medir_estado("psi_plus")      # Medir estado |+>
+    repo.medir_estado("psi_minus")     # Medir estado |->
+    repo.medir_estado("ejemplo")       # Medir estado [0.6, 0.8]
+    repo.medir_estado("psi_plus_H")    # Medir estado H|+> ≈ |0>
     

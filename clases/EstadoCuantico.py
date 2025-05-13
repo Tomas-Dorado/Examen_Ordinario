@@ -1,4 +1,4 @@
-import math
+import numpy as np
 
 class EstadoCuantico:
     def __init__(self, id: str, vector, base: str):
@@ -11,14 +11,18 @@ class EstadoCuantico:
         if not isinstance(base, str) or not base:
             raise ValueError("La base debe ser una cadena no vacía.")
 
-        norm = sum(abs(x)**2 for x in vector)
-        if not abs(norm - 1.0) < 1e-8:
-            raise ValueError("El vector debe estar normalizado (suma de |componentes|^2 debe ser 1).")
-
         self.id = id
-        self.vector = vector
+        self.vector= self.normalizar(np.array(vector, dtype=complex))
         self.base = base
 
+    @staticmethod
+    def normalizar(vector):
+        """Normaliza el vector de estado."""
+        norma = np.linalg.norm(vector)
+        if norma == 0:
+            raise ValueError("El vector no puede ser cero")
+        return vector / norma
+    
     def medir(self):
         probabilidades = [abs(amplitud)**2 for amplitud in self.vector]
         return probabilidades
