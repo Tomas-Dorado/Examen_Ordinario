@@ -1,3 +1,5 @@
+import math
+
 class EstadoCuantico:
     def __init__(self, id: str, vector, base: str):
         if not isinstance(id, str) or not id:
@@ -23,3 +25,4 @@ class EstadoCuantico:
     
     def __str__(self):
         return f"{self.id}: vector={self.vector} en base {self.base}"
+
