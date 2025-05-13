@@ -1,7 +1,9 @@
 from EstadoCuantico import EstadoCuantico
 from OperadorCuantico import OperadorCuantico
+import csv
 
 class RepositorioDeEstados:
+
     def __init__(self):
         self.estados = {}
 
@@ -77,6 +79,31 @@ class RepositorioDeEstados:
             print(f"Suma total: {sum(p for _, p in probabilidades)*100:.2f}%")
         else:
             return probabilidades
+        
+    def guardar_estados(self, archivo):
+        """ Guarda los estados en un archivo CSV. """
+        with open(archivo, 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(['ID', 'Vector', 'Base'])
+            for estado in self.estados.values():
+                writer.writerow([estado.id, estado.vector, estado.base])
+    
+    def cargar_estados(self, archivo):
+        """ Carga los estados desde un archivo CSV. """
+        with open(archivo, 'r') as csvfile:
+            reader = csv.reader(csvfile)
+            next(reader)
+
+
+repo = RepositorioDeEstados()
+repo.agregar_estado("q0", [1.0,0.0], "computacional")
+repo.agregar_estado("q1", [0.0,1.0], "computacional")
+repo.guardar_estados("estados.csv")  # Debería crear el archivo con 2 estados.
+ 
+# Simulando una nueva sesión:
+repo2 = RepositorioDeEstados()
+repo2.cargar_estados("estados.csv")
+print(repo2.listar_estados())  # Debería mostrar q0 y q1 cargados desde el archivo.
 
     
 
